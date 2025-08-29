@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit
 
 class Lunaria<R> {
     companion object {
+        val pool: ForkJoinPool = ForkJoinPool()
+
         fun <R> of(action: Lunaria<R>.() -> R?) = Lunaria(action)
     }
     private val runnable: (Lunaria<R>) -> R?
@@ -52,7 +54,11 @@ class Lunaria<R> {
                 break
             }
             runCatching {
-                ForkJoinPool.commonPool().awaitTermination(5, TimeUnit.MILLISECONDS)
+                this.isDone = pool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
+            }.exceptionOrNull()?.also { ex: Throwable ->
+                this.exception = ex
+                handleException()
+                this.isDone = true
             }
         }
         return this.result
