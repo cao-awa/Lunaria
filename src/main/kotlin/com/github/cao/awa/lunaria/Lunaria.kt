@@ -52,7 +52,7 @@ class Lunaria<R> {
                 break
             }
             runCatching {
-                ForkJoinPool.commonPool().awaitQuiescence(5, TimeUnit.MILLISECONDS)
+                ForkJoinPool.commonPool().awaitTermination(5, TimeUnit.MILLISECONDS)
             }
         }
         return this.result

@@ -9,7 +9,7 @@ The Lunaria is a powerful and flexible concurrent library.
 |   100    |  1 ms   |      1 ms       |
 |   1000   |  5 ms   |      13 ms      |
 |  10000   |  19 ms  |     106 ms      |
-|  100000  |  83 ms  |     793 ms      |
+|  100000  |  20 ms  |     793 ms      |
 
 # Application
 The Lunaria is could use in task dense application, such as large HTTP server, large game server, etc.

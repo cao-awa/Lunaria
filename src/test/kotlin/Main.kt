@@ -53,7 +53,7 @@ fun testJavaCancel() {
 
 fun testLunaria() {
     val start: Long = System.nanoTime()
-    val count = 100
+    val count = 10000
     println("Test Lunaria concurrent with $count tasks")
     for (i: Int in 0..count) {
         val action: Lunaria<String> = Lunaria.of {
@@ -65,7 +65,7 @@ fun testLunaria() {
 }
 
 fun testJavaConcurrent() {
-    val count = 100
+    val count = 10000
     println("Test Java concurrent with $count tasks")
     val start: Long = System.nanoTime()
     for (i: Int in 0..count) {
