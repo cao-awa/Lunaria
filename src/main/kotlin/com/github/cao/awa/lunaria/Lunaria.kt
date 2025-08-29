@@ -12,11 +12,12 @@ class Lunaria<R> {
     }
     private val runnable: (Lunaria<R>) -> R?
     private var thread: Thread
-    private var result: R? = null
+    var result: R? = null
     var isDone: Boolean = false
     var state: LunariaState = LunariaState.RUNNING
     var exception: Throwable? = null
     var exceptionHandler: ((Throwable) -> Unit) = { }
+    var completeHandler: ((R?) -> R?) = { it }
 
     constructor(action: Lunaria<R>.() -> R?) {
         this.runnable = action
@@ -39,12 +40,17 @@ class Lunaria<R> {
         this.state = LunariaState.FAILED
     }
 
-    inline fun <reified E: Throwable> withExceptionHandler(crossinline handler: (E) -> Unit): Lunaria<R> {
+    inline fun <reified E: Throwable> withException(crossinline handler: (E) -> Unit): Lunaria<R> {
         this.exceptionHandler = {
             if (it is E) {
                 handler(it)
             }
         }
+        return this
+    }
+
+    fun withComplete(handler: (R?) -> R): Lunaria<R> {
+        this.completeHandler = handler
         return this
     }
 
@@ -61,7 +67,7 @@ class Lunaria<R> {
                 this.isDone = true
             }
         }
-        return this.result
+        return this.completeHandler(this.result)
     }
 
     fun cancel() {

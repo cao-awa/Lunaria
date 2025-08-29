@@ -28,7 +28,7 @@ fun testLunariaCancel() {
         }
 
         "Result"
-    }.withExceptionHandler<InterruptedException> {
+    }.withException<InterruptedException> {
         println("Caught InterruptedException: ${it.message}")
     }
     Thread.sleep(300)
