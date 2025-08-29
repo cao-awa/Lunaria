@@ -16,7 +16,7 @@ The Lunaria is could use in task dense application, such as large HTTP server, l
 
 ### Build requirements
 
-Lunaria has configured whole project, just clone the repository, and reload project then run the gradle task ```remapJar```.
+Lunaria has configured whole project, just clone the repository, and reload project then run the gradle task ```build```.
 
 | Requirement | Version |             Notes             |
 |------------:|:-------:|:-----------------------------:|
@@ -27,7 +27,7 @@ Lunaria has configured whole project, just clone the repository, and reload proj
 # Sample
 ## Kotlin
 ```kotlin
-val task: Lunaria<Double> = Lunaria {
+val task: SupplierLunaria<Double> = SupplierLunaria {
     var result = 0.0
     for (i: Int in 1..5000000) {
         result += sqrt(Double.MAX_VALUE) / i
@@ -35,8 +35,25 @@ val task: Lunaria<Double> = Lunaria {
     result
 }
 // Do other things...
-println("* Other things..…")
+println("* Other things...")
 // Got result when you need to use.
 val sqrtTimes: Double? = task.get()
 println(sqrtTimes)
+
+-—-—-—-—-—-—-—-—-—-—-—-—-
+        
+val task: ConsumerLunaria<Double> = ConsumerLunaria(Double.MAX_VALUE) { input: Double ->
+    println("* Calculating...")
+    Thread.sleep(1000)
+    sqrt(input)
+    println("* Calculated: ${sqrt(input)}")
+    Thread.sleep(1000)
+}
+// Do other things...
+println("* Other things...")
+println("* Other things...")
+println("* Other things...")
+println("* Other things...")
+task.await()
+println("* Next things...")
 ```
