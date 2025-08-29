@@ -1,6 +1,8 @@
 import com.github.cao.awa.lunaria.Lunaria
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
+import kotlin.math.log
+import kotlin.math.sqrt
 
 fun main() {
     // Initial test runs to warm up the JVM
@@ -8,16 +10,33 @@ fun main() {
     testLunaria()
     testJavaConcurrent()
 
-    println("-----------------------------------")
+//    println("-----------------------------------")
+//
+//    println("Start testing Lunaria")
+//    testLunaria()
+//    println("Start testing Java Concurrent")
+//    testJavaConcurrent()
+//    println("Start testing Lunaria Cancel")
+//    testLunariaCancel()
+//    println("Start testing Java Cancel")
+//    testJavaCancel()
 
-    println("Start testing Lunaria")
-    testLunaria()
-    println("Start testing Java Concurrent")
-    testJavaConcurrent()
-    println("Start testing Lunaria Cancel")
-    testLunariaCancel()
-    println("Start testing Java Cancel")
-    testJavaCancel()
+    val start: Long = System.nanoTime()
+
+    val task: Lunaria<Double> = Lunaria {
+        var result: Double = 0.0
+        for (i: Int in 1..5000000) {
+            result += sqrt(Double.MAX_VALUE) / i
+        }
+        result
+    }
+    // Do other things...
+    println("* Other things..…")
+    // Got result when you need to use.
+    val sqrtTimes: Double? = task.get()
+    println(sqrtTimes)
+
+    println("Lunaria total take ${(System.nanoTime() - start) / 1_000_000} ms")
 }
 
 fun testLunariaCancel() {

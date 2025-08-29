@@ -60,7 +60,7 @@ class Lunaria<R> {
                 break
             }
             runCatching {
-                this.isDone = pool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
+                pool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
             }.exceptionOrNull()?.also { ex: Throwable ->
                 this.exception = ex
                 handleException()

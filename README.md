@@ -23,3 +23,20 @@ Lunaria has configured whole project, just clone the repository, and reload proj
 |        Java |   21+   |         21 Or higher          |
 |      Gradle | 9.0.0+  | 9.0.0 or higher could be use  |
 |      Kotlin | 2.2.21+ | 2.1.21 or higher could be use |
+
+# Sample
+## Kotlin
+```kotlin
+val task: Lunaria<Double> = Lunaria {
+    var result = 0.0
+    for (i: Int in 1..5000000) {
+        result += sqrt(Double.MAX_VALUE) / i
+    }
+    result
+}
+// Do other things...
+println("* Other things..…")
+// Got result when you need to use.
+val sqrtTimes: Double? = task.get()
+println(sqrtTimes)
+```
