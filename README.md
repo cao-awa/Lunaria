@@ -16,7 +16,7 @@ The Lunaria is could use in task dense application, such as large HTTP server, l
 
 ### Build requirements
 
-Lunaria has configured whole project, just clone the repository, and reload project then run the gradle task ```build```.
+Lunaria has configured whole project, just clone the repository, and reload project then run the gradle task ```jar```.
 
 | Requirement | Version |             Notes             |
 |------------:|:-------:|:-----------------------------:|
@@ -69,7 +69,7 @@ val inputs: List<Double> = listOf(
     961.0, 1024.0, 1089.0, 1156.0, 1225.0
 )
 val tasks: GroupConsumerLunaria<Double> = GroupConsumerLunaria(inputs, 5) { input ->
-    println("* $input sqrt Calculating...")
+    println("* $input sqrt Calculating...")[README.md](README.md)
     Thread.sleep(100)
     sqrt(input)
     println("* $input sqrt Calculated: ${sqrt(input)}")

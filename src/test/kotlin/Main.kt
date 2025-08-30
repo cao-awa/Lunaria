@@ -25,10 +25,7 @@ fun main() {
 
 //    val start: Long = System.nanoTime()
 //
-
-    for (i: Int in 0..100) {
-        testGroupConsumer()
-    }
+    testGroupConsumer()
 }
 
 fun testGroupSuppliers() {

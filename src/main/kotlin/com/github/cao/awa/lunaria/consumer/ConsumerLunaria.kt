@@ -5,6 +5,7 @@ import com.github.cao.awa.lunaria.pool.LunariaPool
 import com.github.cao.awa.lunaria.state.LunariaState
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.TimeUnit
+import java.util.function.Consumer
 
 /**
  * A consumer-based implementation of the Lunaria interface that handles input processing and exception handling.
@@ -25,11 +26,11 @@ class ConsumerLunaria<I>: Lunaria {
          * @param action The action to be performed on the input
          * @return A new ConsumerLunaria instance
          */
-        fun <I> of(input: I, action: (I) -> Unit) = ConsumerLunaria(input, action)
+        fun <I> of(input: I, action: Consumer<I>) = ConsumerLunaria(input, action)
     }
 
     // The action to be executed on the input
-    private val runnable: (I) -> Unit
+    private val runnable: Consumer<I>
     // The input data to be processed
     private val input: I
 
@@ -43,7 +44,7 @@ class ConsumerLunaria<I>: Lunaria {
      *
      * @since 1.0.0
      */
-    constructor(input: I, action: (I) -> Unit) {
+    constructor(input: I, action: Consumer<I>) {
         this.input = input
         this.runnable = action
     }
@@ -120,10 +121,11 @@ class ConsumerLunaria<I>: Lunaria {
     override fun getAction(): Runnable {
        return Runnable {
             runCatching {
-                this.runnable(this.input)
+                this.runnable.accept(this.input)
             }.exceptionOrNull().also { exception: Throwable? ->
                 this.exception = exception
                 handleException()
+                markDone()
             }
            markDone()
         }

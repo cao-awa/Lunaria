@@ -5,6 +5,7 @@ plugins {
 }
 
 group = 'com.github.cao.awa'
+version = project.version
 
 publishing {
     repositories {

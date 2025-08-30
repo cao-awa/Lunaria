@@ -5,6 +5,7 @@ import com.github.cao.awa.lunaria.consumer.ConsumerLunaria
 import com.github.cao.awa.lunaria.pool.LunariaPool
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeUnit
+import java.util.function.Consumer
 
 /**
  * A group consumer implementation that processes collections of inputs in parallel groups.
@@ -28,7 +29,7 @@ class GroupConsumerLunaria<I: Any>(
     /**
      * The action to be performed on each input element
      */
-    private val action: (I) -> Unit
+    private val action: Consumer<I>
 ): Lunaria() {
     // Split inputs into groups based on the specified split size
     private var groups: List<List<I>> = this.inputs.chunked(this.split)
@@ -42,7 +43,7 @@ class GroupConsumerLunaria<I: Any>(
                 runCatching {
                     // Process each input in the group
                     for (input: I in groupedInputs) {
-                        this.action(input)
+                        this.action.accept(input)
                     }
                 }.exceptionOrNull()?.also { ex: Throwable ->
                     // Handle any exceptions that occur during processing
@@ -69,13 +70,16 @@ class GroupConsumerLunaria<I: Any>(
      */
     fun await() {
         // Wait for executors to initialize
-        while (this.executors == null) {
+        while (true) {
+            if (this.executors != null) {
+                break
+            }
             runCatching {
                 LunariaPool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
             }.exceptionOrNull()?.also { ex: Throwable ->
                 this.exception = ex
                 handleException()
-                this.isDone = true
+                markDone()
             }
             markDone()
             return
