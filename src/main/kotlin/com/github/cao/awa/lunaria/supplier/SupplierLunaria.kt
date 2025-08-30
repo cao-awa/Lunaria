@@ -45,20 +45,21 @@ class SupplierLunaria<R>: Lunaria {
                 handleException()
                 this.isDone = true
             }
+
         }
+        markDone()
         return this.completeHandler(this.result)
     }
 
     override fun getAction(): Runnable {
        return Runnable {
-            runCatching {
-                this.result = this.runnable(this)
-            }.exceptionOrNull().also { exception: Throwable? ->
-                this.exception = exception
-                handleException()
-            }
-            this.isDone = true
-            this.state = LunariaState.DONE
+           runCatching {
+               this.result = this.runnable(this)
+           }.exceptionOrNull().also { exception: Throwable? ->
+               this.exception = exception
+               handleException()
+           }
+           markDone()
         }
     }
 }

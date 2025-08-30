@@ -5,7 +5,7 @@ import com.github.cao.awa.lunaria.state.LunariaState
 import com.github.cao.awa.lunaria.supplier.SupplierLunaria
 
 abstract class Lunaria {
-    private lateinit var thread: Thread
+    private var thread: Thread
     var isDone: Boolean = false
     var state: LunariaState = LunariaState.RUNNING
     var exception: Throwable? = null
@@ -32,4 +32,8 @@ abstract class Lunaria {
         this.state = LunariaState.CANCELLED
     }
 
+    fun markDone() {
+        this.isDone = true
+        this.state = LunariaState.DONE
+    }
 }

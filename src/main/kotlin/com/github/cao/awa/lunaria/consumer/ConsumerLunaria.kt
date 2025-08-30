@@ -51,8 +51,7 @@ class ConsumerLunaria<I>: Lunaria {
                 this.exception = exception
                 handleException()
             }
-            this.isDone = true
-            this.state = LunariaState.DONE
+           markDone()
         }
     }
 }

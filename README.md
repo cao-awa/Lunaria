@@ -40,7 +40,7 @@ println("* Other things...")
 val sqrtTimes: Double? = task.get()
 println(sqrtTimes)
 
--—-—-—-—-—-—-—-—-—-—-—-—-
+// -—-—-—-—-—-—-—-—-—-—-—-—-
         
 val task: ConsumerLunaria<Double> = ConsumerLunaria(Double.MAX_VALUE) { input: Double ->
     println("* Calculating...")
@@ -55,5 +55,32 @@ println("* Other things...")
 println("* Other things...")
 println("* Other things...")
 task.await()
+println("* Next things...")
+
+// -—-—-—-—-—-—-—-—-—-—-—-—-
+
+val inputs: List<Double> = listOf(
+    1.0, 4.0, 9.0, 16.0, 25.0,
+    36.0, 49.0, 64.0, 81.0, 100.0,
+    121.0, 144.0, 169.0, 196.0, 225.0,
+    256.0, 289.0, 324.0, 361.0, 400.0,
+    441.0, 484.0, 529.0, 576.0, 625.0,
+    676.0, 729.0, 784.0, 841.0, 900.0,
+    961.0, 1024.0, 1089.0, 1156.0, 1225.0
+)
+val tasks: GroupConsumerLunaria<Double> = GroupConsumerLunaria(inputs, 5) { input ->
+    println("* $input sqrt Calculating...")
+    Thread.sleep(100)
+    sqrt(input)
+    println("* $input sqrt Calculated: ${sqrt(input)}")
+    Thread.sleep(100)
+}
+
+// Do other things...
+println("* Other things...")
+println("* Other things...")
+println("* Other things...")
+println("* Other things...")
+tasks.await()
 println("* Next things...")
 ```
