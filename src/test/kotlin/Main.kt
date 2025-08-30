@@ -31,7 +31,7 @@ fun main() {
 
 fun testGroupSuppliers() {
     var index: Int = 0
-    val tasks: GroupSupplierLunaria<Int> = GroupSupplierLunaria(5) {
+    val tasks: GroupSupplierLunaria<Int> = GroupSupplierLunaria(20, 4) {
         println("* index Calculating...")
         Thread.sleep(100)
         index ++
