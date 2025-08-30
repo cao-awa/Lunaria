@@ -3,7 +3,6 @@ plugins {
 }
 
 group = 'com.github.cao.awa'
-version = '1.0.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
