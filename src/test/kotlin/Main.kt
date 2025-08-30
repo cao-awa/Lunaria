@@ -1,6 +1,7 @@
 import com.github.cao.awa.lunaria.consumer.ConsumerLunaria
 import com.github.cao.awa.lunaria.consumer.group.GroupConsumerLunaria
 import com.github.cao.awa.lunaria.supplier.SupplierLunaria
+import com.github.cao.awa.lunaria.supplier.group.GroupSupplierLunaria
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Future
 import kotlin.math.sqrt
@@ -25,7 +26,25 @@ fun main() {
 //    val start: Long = System.nanoTime()
 //
 
-    testGroupConsumer()
+    testGroupSuppliers()
+}
+
+fun testGroupSuppliers() {
+    var index: Int = 0
+    val tasks: GroupSupplierLunaria<Int> = GroupSupplierLunaria(5) {
+        println("* index Calculating...")
+        Thread.sleep(100)
+        index ++
+    }
+
+    // Do other things...
+    println("* Other things...")
+    println("* Other things...")
+    println("* Other things...")
+    println("* Other things...")
+    val result: List<Int?> = tasks.get()
+    println("Result: $result")
+    println("* Next things...")
 }
 
 fun testGroupConsumer() {
