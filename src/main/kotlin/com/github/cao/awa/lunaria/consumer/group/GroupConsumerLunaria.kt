@@ -2,9 +2,7 @@ package com.github.cao.awa.lunaria.consumer.group
 
 import com.github.cao.awa.lunaria.Lunaria
 import com.github.cao.awa.lunaria.consumer.ConsumerLunaria
-import com.github.cao.awa.lunaria.state.LunariaState
-import com.github.cao.awa.lunaria.supplier.SupplierLunaria.Companion.pool
-import java.nio.ReadOnlyBufferException
+import com.github.cao.awa.lunaria.pool.LunariaPool
 import java.util.concurrent.TimeUnit
 
 class GroupConsumerLunaria<I: Any>(
@@ -39,7 +37,7 @@ class GroupConsumerLunaria<I: Any>(
     fun await() {
         while (this.executors == null) {
             runCatching {
-                pool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
+                LunariaPool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
             }.exceptionOrNull()?.also { ex: Throwable ->
                 this.exception = ex
                 handleException()

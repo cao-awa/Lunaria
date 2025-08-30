@@ -1,14 +1,13 @@
 package com.github.cao.awa.lunaria.supplier
 
 import com.github.cao.awa.lunaria.Lunaria
+import com.github.cao.awa.lunaria.pool.LunariaPool
 import com.github.cao.awa.lunaria.state.LunariaState
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.TimeUnit
 
 class SupplierLunaria<R>: Lunaria {
     companion object {
-        val pool: ForkJoinPool = ForkJoinPool()
-
         fun <R> of(action: SupplierLunaria<R>.() -> R?) = SupplierLunaria(action)
     }
     private val runnable: (SupplierLunaria<R>) -> R?
@@ -39,7 +38,7 @@ class SupplierLunaria<R>: Lunaria {
                 break
             }
             runCatching {
-                pool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
+                LunariaPool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
             }.exceptionOrNull()?.also { ex: Throwable ->
                 this.exception = ex
                 handleException()

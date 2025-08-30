@@ -1,6 +1,7 @@
 package com.github.cao.awa.lunaria.consumer
 
 import com.github.cao.awa.lunaria.Lunaria
+import com.github.cao.awa.lunaria.pool.LunariaPool
 import com.github.cao.awa.lunaria.state.LunariaState
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.TimeUnit
@@ -34,7 +35,7 @@ class ConsumerLunaria<I>: Lunaria {
                 break
             }
             runCatching {
-                pool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
+                LunariaPool.awaitQuiescence(1, TimeUnit.MILLISECONDS)
             }.exceptionOrNull()?.also { ex: Throwable ->
                 this.exception = ex
                 handleException()
