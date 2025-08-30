@@ -1,8 +1,32 @@
 plugins {
+    id 'java'
     id 'org.jetbrains.kotlin.jvm' version '2.1.21'
+    id 'maven-publish'
 }
 
 group = 'com.github.cao.awa'
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/cao-awa/Lunaria")
+            credentials {
+                username = System.getenv("GH_ACTOR")
+                password = System.getenv("GH_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            groupId = project.group_id
+            artifactId = project.artifact_id
+            version = project.version_name
+
+            from components.java
+        }
+    }
+}
 
 repositories {
     mavenCentral()
