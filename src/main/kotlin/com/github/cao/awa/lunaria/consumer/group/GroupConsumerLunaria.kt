@@ -3,6 +3,7 @@ package com.github.cao.awa.lunaria.consumer.group
 import com.github.cao.awa.lunaria.Lunaria
 import com.github.cao.awa.lunaria.consumer.ConsumerLunaria
 import com.github.cao.awa.lunaria.pool.LunariaPool
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.TimeUnit
 
 /**
@@ -32,7 +33,7 @@ class GroupConsumerLunaria<I: Any>(
     // Split inputs into groups based on the specified split size
     private var groups: List<List<I>> = this.inputs.chunked(this.split)
     // List of executors, one for each group
-    private val executors: MutableList<ConsumerLunaria<List<I>>>? = ArrayList<ConsumerLunaria<List<I>>>()
+    private val executors: MutableList<ConsumerLunaria<List<I>>>? = CopyOnWriteArrayList<ConsumerLunaria<List<I>>>()
 
     init {
         // Initialize executors for each group
